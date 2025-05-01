@@ -19,10 +19,8 @@ export const MazeConfig: React.FC = () => {
   const getMapData = async () => {
     const {data, error} = await fetchMapData(1);
 
-    console.log('asdf', data)
-
     if (error) {
-        console.log('ERROR!!', error);
+        console.warn('ERROR!!', error);
         return;
     }
 

@@ -17,10 +17,12 @@ export const fetchMapData = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data: MazeData = await response.json();
+    const data: {
+      labirint: MazeData;
+    } = await response.json();
 
     return {
-      data,
+      data: data.labirint,
     };
   } catch (err) {
     return {
