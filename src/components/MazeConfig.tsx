@@ -2,6 +2,8 @@ import { Map } from "./Map";
 import React, { useEffect, useRef, useState } from "react";
 import { MazeData, Position, RobotPath } from "../types";
 import { fetchMapData } from "../api";
+import SelectDropdown from "./DropDown";
+
 
 export const MazeConfig: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -15,9 +17,11 @@ export const MazeConfig: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [selectedMazeNum, setSelectedMazeNum] = useState(0);
+
 
   const getMapData = async () => {
-    const {data, error} = await fetchMapData(1);
+    const {data, error} = await fetchMapData( selectedMazeNum==0?1:selectedMazeNum );
 
     if (error) {
         console.warn('ERROR!!', error);
@@ -27,7 +31,15 @@ export const MazeConfig: React.FC = () => {
     setMazeData(data);
   }
 
-  // Инициализация мок-данных
+  const selectMaze = (value: number) =>{
+    setSelectedMazeNum(value)
+  }
+
+  useEffect(() => {
+    getMapData();
+  }, [selectedMazeNum]);
+
+    // Инициализация мок-данных
   useEffect(() => {
     getMapData();
 
@@ -235,26 +247,26 @@ export const MazeConfig: React.FC = () => {
 
           {/* Дополнительные кнопки */}
           <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              marginTop: "20px",
-            }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                marginTop: "20px",
+              }}
           >
             <h3>Дополнительные функции</h3>
-            <button style={buttonStyle}>Выбор стартовой точки</button>
-            <button style={buttonStyle}>Выбор конечных точек</button>
-            <button style={buttonStyle}>Выбор лабиринта</button>
             <button onClick={startTimer} style={buttonStyle}>
               Засечь время
             </button>
+            <button style={buttonStyle}>Выбор стартовой точки</button>
+            <button style={buttonStyle}>Выбор конечных точек</button>
+            <SelectDropdown label={"Выбор лабиринта"} onChange={selectMaze}/>
           </div>
 
           {/* Информация о состоянии */}
           <div
-            style={{
-              marginTop: "20px",
+              style={{
+                marginTop: "20px",
               padding: "10px",
               backgroundColor: "#fff",
               borderRadius: "5px",
