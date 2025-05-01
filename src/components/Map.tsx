@@ -27,7 +27,7 @@ export const Map: React.FC<Props> = ({ canvasRef, mazeData, currentRobotPosition
     // Отрисовка клеток лабиринта
     for (let y = 0; y < mazeData.length; y++) {
       for (let x = 0; x < mazeData[y].length; x++) {
-        ctx.fillStyle = mazeData[y][x] === "wall" ? "#333" : "#fff";
+        ctx.fillStyle = mazeData[y][x] === 1 ? "#333" : "#fff";
         ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
         ctx.strokeStyle = "#ddd";
         ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
